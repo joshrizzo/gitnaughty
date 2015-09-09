@@ -1,0 +1,67 @@
+[alias]
+	a = add -A
+	aliases = config --get-regexp alias
+	amend = commit -a --amend
+	b = branch
+	back = reset HEAD@{1} 
+	bclean = !git branch --merged ${1-master} | grep -v " ${1-master}" | xargs -r git branch -d
+	bent = checkout -b
+	bl = blame -w -M -C
+	bra = branch -rav
+	branches = branch -rav
+	busy = log --since yesterday --oneline --author 'joshrizzo'
+	c = checkout
+	cb = checkout -b
+	changed = status -sb
+	dirty = log -u
+	down = !CURRENT=$(git rev-parse --abbrev-ref HEAD) && git checkout ${1-master} && git up && git merge $CURRENT
+	even = push -f
+	f = fetch
+	found = stash pop
+	fresh = !git fetch && git pull
+	funky = !git a && git stash && git up && git stash pop
+	head = rev-parse --short HEAD
+	iton = !git a && git commit -m
+	jiggy = shortlog -s -e --
+	krunk = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue) [%an]%Creset' --abbrev-commit --date=relative --all
+	l = log --pretty=oneline --abbrev-commit
+	last = log -p --max-count=1 --word-diff
+	lasttag = describe --tags --abbrev=0
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	ll = log --pretty=oneline --abbrev-commit --max-count=15
+	lost = !git a && git stash
+	mad = reset --hard
+	nasty = log --stat --summary
+	naughty = config --global -e
+	nekid = !git checkout ${1-master} && git up && git bclean ${1-master}
+	paid = !CURRENT=$(git rev-parse --abbrev-ref HEAD) && git push origin $CURRENT:master
+	pick = add -p
+	pom = push origin master
+	pos = push origin source
+	pr = pull --rebase
+	prune = fetch --prune
+	pub = !git push origin HEAD:master && git push . HEAD:master && git checkout master
+	r = rebase --interactive HEAD~10
+	ra = rebase --abort
+	rc = rebase --continue
+	ready = !git-init
+	remotes = remote -v show
+	ripped = reflog
+	save = !git add -A && git commit -m 'SAVEPOINT'
+	sober = !git checkout `git rev-list --topo-order HEAD.."$*" | tail -1`
+	some = -p status
+	ss = -p status -s
+	stage = add
+	stats = diff --stat
+	sync = !git fetch upstream -v && git fetch origin -v && git checkout master && git merge upstream/master
+	tcd = tf checkin --deep
+	tcds = tf checkin --shallow
+	together = mergetool
+	tpr = tf pull --rebase --deep
+	tprs = tf pull --rebase --shallow
+	up = !git fetch --all --prune && git rebase origin/master && git submodule update && git push . origin/master:master 2> /dev/null
+	wasted = checkout HEAD~
+	wdiff = diff --word-diff
+	wip = commit -am "WIP"
+	wrecked = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+	yolo= !git commit -am "DEAL WITH IT" && git push -f origin master
