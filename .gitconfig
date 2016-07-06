@@ -1,3 +1,6 @@
+[user]
+	name = jrizzo
+	email = josh.rizzo@gmail.com
 [alias]
 	a = add -A
 	aliases = config --get-regexp alias
@@ -9,12 +12,13 @@
 	bl = blame -w -M -C
 	bra = branch -rav
 	branches = branch -rav
-	busy = log --since yesterday --oneline --author 'joshrizzo'
+	standup = log --since yesterday --oneline --author 'jrizzo'
 	c = checkout
 	cb = checkout -b
 	changed = status -sb
+	codereview = whatchanged -p --since '2 weeks ago' --author 'jrizzo'
 	dirty = log -u
-	down = !CURRENT=$(git rev-parse --abbrev-ref HEAD) && git checkout ${1-master} && git up && git merge $CURRENT
+	down = !CURRENT=$(git rev-parse --abbrev-ref HEAD) && git checkout ${1-master} && git fetch && git pull && git merge $CURRENT
 	even = push -f
 	f = fetch
 	found = stash pop
@@ -25,8 +29,10 @@
 	jiggy = shortlog -s -e --
 	krunk = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue) [%an]%Creset' --abbrev-commit --date=relative --all
 	l = log --pretty=oneline --abbrev-commit
+	laid = !CURRENT=$(git rev-parse --abbrev-ref HEAD) && git push origin $CURRENT
 	last = log -p --max-count=1 --word-diff
 	lasttag = describe --tags --abbrev=0
+	lenda = !git c index.html && git iton
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	ll = log --pretty=oneline --abbrev-commit --max-count=15
 	lost = !git a && git stash
@@ -34,7 +40,8 @@
 	nasty = log --stat --summary
 	naughty = config --global -e
 	nekid = !git checkout ${1-master} && git up && git bclean ${1-master}
-	paid = !CURRENT=$(git rev-parse --abbrev-ref HEAD) && git push origin $CURRENT:master
+	ontop = !git a && git amend -m
+	paid = push
 	pick = add -p
 	pom = push origin master
 	pos = push origin source
@@ -59,9 +66,19 @@
 	together = mergetool
 	tpr = tf pull --rebase --deep
 	tprs = tf pull --rebase --shallow
-	up = !git fetch --all --prune && git rebase origin/master && git submodule update && git push . origin/master:master 2> /dev/null
+	up = !git fetch --all --prune && git rebase origin/master
 	wasted = checkout HEAD~
 	wdiff = diff --word-diff
 	wip = commit -am "WIP"
 	wrecked = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
 	yolo= !git commit -am "DEAL WITH IT" && git push -f origin master
+[credential]
+	helper = wincred
+[core]
+	editor = 'c:/program files/sublime text 3/subl.exe'
+	autocrlf = true
+	excludesfile = C:\\Users\\Joshua Cosimo Rizzo\\Documents\\gitignore_global.txt
+[merge]
+	tool = meld
+[mergetool "meld"]
+	path = c:/Program files (x86)/Meld/meld.exe
