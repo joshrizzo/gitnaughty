@@ -1,3 +1,4 @@
+# This is Git's per-user configuration file.
 [user]
 	name = jrizzo
 	email = josh.rizzo@gmail.com
@@ -7,7 +8,7 @@
 	amend = commit -a --amend
 	b = branch
 	back = reset HEAD@{1} 
-	bclean = !git branch --merged ${1-master} | grep -v " ${1-master}" | xargs -r git branch -d
+	bclean = !git branch --merged ${1-dev} | grep -v " ${1-dev}" | xargs -r git branch -d
 	bent = checkout -b
 	bl = blame -w -M -C
 	bra = branch -rav
@@ -16,38 +17,39 @@
 	c = checkout
 	cb = checkout -b
 	changed = status -sb
+	cleansed = !Get-ChildItem . -recurse -include *.orig | remove-item; Get-ChildItem . -recurse -include *.backup | remove-item
 	codereview = whatchanged -p --since '2 weeks ago' --author 'jrizzo'
 	dirty = log -u
-	down = !CURRENT=$(git rev-parse --abbrev-ref HEAD) && git checkout ${1-master} && git fetch && git pull && git merge $CURRENT
+	down = !CURRENT=$(git rev-parse --abbrev-ref HEAD) && git checkout ${1-dev} && git fetch && git pull && git merge $CURRENT
 	even = push -f
 	f = fetch
 	found = stash pop
 	fresh = !git fetch && git pull
 	funky = !git a && git stash && git up && git stash pop
+	gud = !git c ${1-dev} && git fetch --all && git mad origin/${1-dev}
 	head = rev-parse --short HEAD
 	iton = !git a && git commit -m
 	jiggy = shortlog -s -e --
 	krunk = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue) [%an]%Creset' --abbrev-commit --date=relative --all
 	l = log --pretty=oneline --abbrev-commit
-	laid = !CURRENT=$(git rev-parse --abbrev-ref HEAD) && git push origin $CURRENT
+	laid = !git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -d
 	last = log -p --max-count=1 --word-diff
 	lasttag = describe --tags --abbrev=0
-	lenda = !git c index.html && git iton
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	ll = log --pretty=oneline --abbrev-commit --max-count=15
-	lost = !git a && git stash
-	mad = reset --hard
+	lost = !git branch --merged | %{$_.trim()} | ?{$_ -notmatch 'develop' -and $_ -notmatch 'master'} | %{git branch -d $_}
+	mad = !CURRENT=$(git rev-parse --abbrev-ref HEAD) && git reset --hard origin/$CURRENT
 	nasty = log --stat --summary
 	naughty = config --global -e
-	nekid = !git checkout ${1-master} && git up && git bclean ${1-master}
+	nekid = !git checkout ${1-dev} && git up && git bclean ${1-dev}
 	ontop = !git a && git amend -m
-	paid = push
+	paid = !CURRENT=$(git rev-parse --abbrev-ref HEAD) && git push -u origin $CURRENT
 	pick = add -p
 	pom = push origin master
 	pos = push origin source
 	pr = pull --rebase
 	prune = fetch --prune
-	pub = !git push origin HEAD:master && git push . HEAD:master && git checkout master
+	pub = !git push origin HEAD:${1-dev} && git push . HEAD:${1-dev} && git checkout ${1-dev}
 	r = rebase --interactive HEAD~10
 	ra = rebase --abort
 	rc = rebase --continue
@@ -60,18 +62,18 @@
 	ss = -p status -s
 	stage = add
 	stats = diff --stat
-	sync = !git fetch upstream -v && git fetch origin -v && git checkout master && git merge upstream/master
+	sync = !git fetch upstream -v && git fetch origin -v && git checkout ${1-dev} && git merge ${1-dev}
 	tcd = tf checkin --deep
 	tcds = tf checkin --shallow
 	together = mergetool
 	tpr = tf pull --rebase --deep
 	tprs = tf pull --rebase --shallow
-	up = !git fetch --all --prune && git rebase origin/master
+	up = !git fetch --all --prune && git merge origin/${1-dev} && git together
 	wasted = checkout HEAD~
 	wdiff = diff --word-diff
 	wip = commit -am "WIP"
 	wrecked = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
-	yolo= !git commit -am "DEAL WITH IT" && git push -f origin master
+	yolo= !git commit -am "DEAL WITH IT" && git push -f origin ${1-dev}
 [credential]
 	helper = wincred
 [core]
@@ -82,3 +84,10 @@
 	tool = meld
 [mergetool "meld"]
 	path = c:/Program files (x86)/Meld/meld.exe
+[difftool "sourcetree"]
+	cmd = '' \"$LOCAL\" \"$REMOTE\"
+[mergetool "sourcetree"]
+	cmd = "'' "
+	trustExitCode = true
+[mergetool]
+	keepBackup = false
