@@ -68,7 +68,7 @@
 	together = mergetool
 	tpr = tf pull --rebase --deep
 	tprs = tf pull --rebase --shallow
-	up = !git fetch --all --prune && git merge origin/${1-dev} && git together
+	up = !git fetch --all --prune && git merge origin/${1-dev} && git together && git iton "merge ${1-dev}"
 	wasted = checkout HEAD~
 	wdiff = diff --word-diff
 	wip = commit -am "WIP"
