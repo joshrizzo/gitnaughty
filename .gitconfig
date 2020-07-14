@@ -26,6 +26,7 @@
 	found = stash pop
 	fresh = !git fetch && git pull
 	funky = !git a && git stash && git up && git stash pop
+	gone = update-index --assume-unchanged
 	gud = !git c ${1-dev} && git fetch --all && git mad origin/${1-dev}
 	head = rev-parse --short HEAD
 	iton = !git a && git commit -m
