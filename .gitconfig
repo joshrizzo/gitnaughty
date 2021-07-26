@@ -69,7 +69,7 @@
 	together = mergetool
 	tpr = tf pull --rebase --deep
 	tprs = tf pull --rebase --shallow
-	up = !git fetch --all --prune && git merge origin/${1-dev} && git together && git iton "merge ${1-dev}"
+	up = !git fetch --all --prune && git merge origin/${1-dev} && git together && git iton "merge"
 	wasted = checkout HEAD~
 	wdiff = diff --word-diff
 	wip = commit -am "WIP"
@@ -80,7 +80,7 @@
 [core]
 	editor = 'c:/program files/sublime text 3/subl.exe'
 	autocrlf = true
-	excludesfile = C:\\Users\\Joshua Cosimo Rizzo\\Documents\\gitignore_global.txt
+	excludesfile = C:\\Users\\jrizzo\\Documents\\gitignore_global.txt
 [merge]
 	tool = meld
 [mergetool "meld"]
